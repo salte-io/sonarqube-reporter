@@ -1,6 +1,9 @@
 FROM openjdk:11
 LABEL MAINTAINER=dave@salte.io
 
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
+RUN apt install -y nodejs
+
 ENV PATH="/opt/sonar-scanner/bin:${PATH}"
 ENV SONAR_SCANNER_HOME=/opt/sonar-scanner
 ENV SONAR_SCANNER_OPTS="-Djavax.net.ssl.keyStore=/usr/local/openjdk-11/lib/security/cacerts -Djavax.net.ssl.trustStore=/usr/local/openjdk-11/lib/security/cacerts"

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const fs = require('fs');
-const { spawn } = require('child_process');
+const childProcess = require('child_process');
 const argv = require('yargs')
   .usage('Usage: $0 -f [ava|jest|mocha|newman] -i [input file] -o [output file]')
   .demandOption(['f','i', 'o'])
@@ -26,7 +26,7 @@ switch(argv.f.toLowerCase()) {
 }
 
 function convertXslt(input, output, stylesheet) {
-  spawn.execSync(`saxonb-xslt -s:${input} -xsl:${stylesheet} -o:${output}`);
+  childProcess.execSync(`saxonb-xslt -s:${input} -xsl:${stylesheet} -o:${output}`);
 }
 
 function convertJest(input, output) {

@@ -9,16 +9,16 @@ const argv = require('yargs')
 
 switch(argv.f.toLowerCase()) {
   case 'ava':
-    convertXslt(argv.i, argv.o, 'ava.xsl');
+    convertXslt(argv.i, argv.o, `${process.env.SONAR_SCANNER_HOME}/transformations/ava.xsl`);
     break;
   case 'jest':
     convertJest(argv.i, argv.o);
     break;
   case 'mocha':
-    convertXslt(argv.i, argv.o, 'mocha.xsl');
+    convertXslt(argv.i, argv.o, `${process.env.SONAR_SCANNER_HOME}/transformations/mocha.xsl`);
     break;
   case 'newman':
-    convertXslt(argv.i, argv.o, 'newman.xsl');
+    convertXslt(argv.i, argv.o, `${process.env.SONAR_SCANNER_HOME}/transformations/newman.xsl`);
     break;
   default:
     console.log(`Invalid format option (-f) specified: ${argv.f.toLowerCase()}; ava, jest, mocha, or newman expected.`);

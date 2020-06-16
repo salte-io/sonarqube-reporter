@@ -29,7 +29,7 @@ report:
   stage: report
   image: salte/sonarqube-reporter:latest
   script:
-    - saxonb-xslt -s:.mocha_output/results.xml -xsl:SONAR_SCANNER_HOME/transformations/mocha.xsl -o:.mocha_output/sonar.xml
+    - convert -f mocha -i .mocha_output/results.xml -o .mocha_output/sonar.xml
     - sonar-scanner -Dsonar.projectKey=$CI_PROJECT_PATH_SLUG -Dsonar.sources=src/application/main -Dsonar.tests=src/application/tests -Dsonar.testExecutionReportPaths=.mocha_output/sonar.xml -Dsonar.javascript.lcov.reportPaths=.coverage/lcov.info -Dsonar.host.url=$SONARQUBE_URL -Dsonar.login=$SONARQUBE_TOKEN
 ```
 ### package.json

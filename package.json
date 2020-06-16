@@ -1,0 +1,14 @@
+{
+  "name": "sonarqube-reporter",
+  "version": "1.0.0",
+  "description": "Converts Ava, Jest, MochaJS, and Newman output test formats to SonarQube's generic input format.",
+  "main": "convert",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Dave Woodward",
+  "license": "MIT",
+  "dependencies": {
+    "yargs": "^15.3.1"
+  }
+}

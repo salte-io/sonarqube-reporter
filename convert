@@ -1,0 +1,52 @@
+#!/usr/bin/env node
+
+const fs = require('fs');
+const { spawn } = require('child_process');
+const argv = require('yargs')
+  .usage('Usage: $0 -f [ava|jest|mocha|newman] -i [input file] -o [output file]')
+  .demandOption(['f','i', 'o'])
+  .argv;
+
+switch(argv.f.toLowerCase()) {
+  case 'ava':
+    convertXslt(argv.i, argv.o, 'ava.xsl');
+    break;
+  case 'jest':
+    convertJest(argv.i, argv.o);
+    break;
+  case 'mocha':
+    convertXslt(argv.i, argv.o, 'mocha.xsl');
+    break;
+  case 'newman':
+    convertXslt(argv.i, argv.o, 'newman.xsl');
+    break;
+  default:
+    console.log(`Invalid format option (-f) specified: ${argv.f.toLowerCase()}; ava, jest, mocha, or newman expected.`);
+    process.exit(1);
+}
+
+function convertXslt(input, output, stylesheet) {
+  spawn.execSync(`saxonb-xslt -s:${input} -xsl:${stylesheet} -o:${output}`);
+}
+
+function convertJest(input, output) {
+  const results = JSON.parse(fs.readFileSync(input, { encoding: 'utf8' }));
+  fs.writeFileSync(output, '<testExecutions version="1">', { encoding: 'utf8' });
+  results.testResults.forEach(file => {
+    const name = file.name.substring(file.name.lastIndexOf('\\') + 1);
+    fs.appendFileSync(output, `<file path="${name}">`, { encoding: 'utf8' });
+    file.assertionResults.forEach(test => {
+      if (test.status === 'passed') {
+        fs.appendFileSync(output, `<testCase name="${test.title}" duration="0" />`, { encoding: 'utf8' });
+      } else {
+        fs.appendFileSync(output, `<testCase name="${test.title}" duration="0">`, { encoding: 'utf8' });
+        test.failureMessages.forEach(message => {
+          fs.appendFileSync(output, `<failure message="${message}" />`, { encoding: 'utf8' });
+        });
+        fs.appendFileSync(output, '</testCase>', { encoding: 'utf8' });
+      }
+    });
+    fs.appendFileSync(output, '</file>', { encoding: 'utf8' });
+  });
+  fs.appendFileSync(output, '</testExecutions>', { encoding: 'utf8' });
+}

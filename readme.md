@@ -33,7 +33,7 @@ report:
     - sonar-scanner -Dsonar.projectKey=$CI_PROJECT_PATH_SLUG -Dsonar.sources=src/application/main -Dsonar.tests=src/application/tests -Dsonar.testExecutionReportPaths=.mocha_output/sonar.xml -Dsonar.javascript.lcov.reportPaths=.coverage/lcov.info -Dsonar.host.url=$SONARQUBE_URL -Dsonar.login=$SONARQUBE_TOKEN
 ```
 ### package.json
-```json
+```json5
 {
   "scripts": {
     "lint": "eslint . --ext js --ignore-path ../../.gitignore",
